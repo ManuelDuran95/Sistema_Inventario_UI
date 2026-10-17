@@ -26,15 +26,17 @@ data class OpcionMenu(val titulo: String, val icono: ImageVector, val accion: ()
 @Composable
 fun MainScreen(
     authViewModel: AuthViewModel,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    onIrAListar: () -> Unit,
+    onIrARegistrar: () -> Unit
 ) {
-    // opciones del sistema en la cuadrícula
+    // Opciones del sistema en la cuadrícula conectadas
     val opciones = listOf(
         OpcionMenu("Listar Activos", Icons.Default.List) {
-            // TODO: Navegar a pantalla de listado
+            onIrAListar()
         },
         OpcionMenu("Registrar Activo", Icons.Default.AddCircle) {
-            // TODO: Navegar a pantalla de registro
+            onIrARegistrar()
         },
         OpcionMenu("Levantar Req.", Icons.Default.Build) {
             // TODO: Navegar a pantalla de requerimiento
@@ -54,9 +56,8 @@ fun MainScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Menú Principal", color = Color.White, fontWeight = FontWeight.Bold) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF1E293B)), // Azul oscuro
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF1E293B)),
                 actions = {
-                    // Cerrar session en la barra superior
                     IconButton(onClick = {
                         authViewModel.logout()
                         onLogout()
@@ -77,7 +78,6 @@ fun MainScreen(
                 .background(Color(0xFFF3F4F6))
                 .padding(innerPadding)
         ) {
-
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(16.dp),
@@ -114,7 +114,7 @@ fun MenuCard(opcion: OpcionMenu) {
                 imageVector = opcion.icono,
                 contentDescription = opcion.titulo,
                 modifier = Modifier.size(54.dp),
-                tint = Color(0xFF3B82F6) // Azul
+                tint = Color(0xFF3B82F6)
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(

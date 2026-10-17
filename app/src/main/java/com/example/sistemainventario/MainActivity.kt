@@ -18,6 +18,8 @@ class MainActivity : ComponentActivity() {
             SistemaDeInventarioTheme {
                 val navController = rememberNavController()
                 val authViewModel: AuthViewModel = viewModel()
+                // 1. Inicializamos la memoria de tu inventario aquí para que no se borre al cambiar de pantalla
+                val inventarioViewModel: InventarioViewModel = viewModel()
 
                 NavHost(navController = navController, startDestination = "login") {
 
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
                             authViewModel = authViewModel,
                             onLoginExitoso = {
                                 navController.navigate("main") {
-                                popUpTo("login") { inclusive = true }
+                                    popUpTo("login") { inclusive = true }
                                 }
                             },
                             onIrARegistro = { navController.navigate("registro") }
@@ -45,11 +47,28 @@ class MainActivity : ComponentActivity() {
                         MainScreen(
                             authViewModel = authViewModel,
                             onLogout = {
-                                // Al salir, volvemos al login y borramos el historial
                                 navController.navigate("login") {
                                     popUpTo("main") { inclusive = true }
                                 }
-                            }
+                            },
+                            // 2. Conectamos los clics del menú hacia tus pantallas
+                            onIrAListar = { navController.navigate("listar_activos") },
+                            onIrARegistrar = { navController.navigate("registrar_activo") }
+                        )
+                    }
+
+                    // 3. Tus dos nuevas pantallas registradas en la navegación
+                    composable("listar_activos") {
+                        ListarActivosScreen(
+                            viewModel = inventarioViewModel,
+                            onVolver = { navController.popBackStack() }
+                        )
+                    }
+
+                    composable("registrar_activo") {
+                        RegistroActivoScreen(
+                            viewModel = inventarioViewModel,
+                            onVolver = { navController.popBackStack() }
                         )
                     }
                 }
