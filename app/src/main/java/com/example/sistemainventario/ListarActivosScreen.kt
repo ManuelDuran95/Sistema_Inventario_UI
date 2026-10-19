@@ -25,7 +25,7 @@ fun ListarActivosScreen(
     onVolver: () -> Unit
 ) {
     var busqueda by remember { mutableStateOf("") }
-    val todosLosActivos = viewModel.listaActivos
+    val todosLosActivos by viewModel.activosFlow.collectAsState()
 
     val activosFiltrados = todosLosActivos.filter {
         it.inventario.contains(busqueda, ignoreCase = true) ||
