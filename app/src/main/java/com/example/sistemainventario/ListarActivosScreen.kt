@@ -25,7 +25,10 @@ fun ListarActivosScreen(
     onVolver: () -> Unit
 ) {
     var busqueda by remember { mutableStateOf("") }
-    val todosLosActivos by viewModel.activosFlow.collectAsState()
+
+    // Solución: Leemos directamente la lista del ViewModel.
+    // Compose detectará los cambios automáticamente.
+    val todosLosActivos = viewModel.listaActivos
 
     val activosFiltrados = todosLosActivos.filter {
         it.inventario.contains(busqueda, ignoreCase = true) ||
@@ -231,7 +234,8 @@ fun ActivoItemCard(activo: ActivoUiModel) {
                         shape = RoundedCornerShape(6.dp)
                     ) {
                         Text(
-                            text = "${activo.cc} • $nombreDepto",
+                            // Solución al error de sintaxis en el salto de línea
+                            text = "${activo.cc} - $nombreDepto",
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,

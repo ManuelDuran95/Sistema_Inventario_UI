@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController // <-- 1. IMPORTACIÓN AÑADIDA
 
 data class OpcionMenu(val titulo: String, val icono: ImageVector, val accion: () -> Unit)
 
@@ -25,6 +26,7 @@ data class OpcionMenu(val titulo: String, val icono: ImageVector, val accion: ()
 @Composable
 fun MainScreen(
     authViewModel: AuthViewModel,
+    navController: NavController, // <-- 2. PARÁMETRO AÑADIDO
     onLogout: () -> Unit,
     onIrAListar: () -> Unit,
     onIrARegistrar: () -> Unit
@@ -39,16 +41,16 @@ fun MainScreen(
             onIrARegistrar()
         },
         OpcionMenu("Levantar Req.", Icons.Default.Build) {
-            // TODO: Navegar a pantalla de requerimiento
+            navController.navigate("levantar_req")
         },
         OpcionMenu("Actualizar Req.", Icons.Default.Refresh) {
-            // TODO: Navegar a pantalla de actualizar estado
+            navController.navigate("actualizar_req")
         },
         OpcionMenu("Ver Reporte", Icons.Default.Info) {
-            // TODO: Navegar a reporte gerencial
+            navController.navigate("reporte")
         },
         OpcionMenu("Forzar Error", Icons.Default.Warning) {
-            // TODO: Lógica de forzar error
+            navController.navigate("forzar_error")
         }
     )
 

@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.sistemainventario.ui.theme.SistemaDeInventarioTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -51,6 +52,7 @@ class MainActivity : ComponentActivity() {
                                     popUpTo("main") { inclusive = true }
                                 }
                             },
+                            navController = navController,
                             // 2. Conectamos los clics del menú hacia tus pantallas
                             onIrAListar = { navController.navigate("listar_activos") },
                             onIrARegistrar = { navController.navigate("registrar_activo") }
@@ -71,6 +73,11 @@ class MainActivity : ComponentActivity() {
                             onVolver = { navController.popBackStack() }
                         )
                     }
+
+                    composable("levantar_req") { LevantarReqScreen(inventarioViewModel) { navController.popBackStack() } }
+                    composable("actualizar_req") { ActualizarReqScreen(inventarioViewModel) { navController.popBackStack() } }
+                    composable("reporte") { VerReporteScreen(inventarioViewModel) { navController.popBackStack() } }
+                    composable("forzar_error") { ForzarErrorScreen(inventarioViewModel) { navController.popBackStack() } }
                 }
             }
         }
