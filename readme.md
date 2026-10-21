@@ -21,3 +21,6 @@ El proyecto está desarrollado en **Kotlin** y utiliza las siguientes librerías
 * **Navigation Compose:** Manejo de rutas y pila de navegación entre pantallas.
   ```kotlin
   implementation("androidx.navigation:navigation-compose:2.7.7")
+
+## Investigacion sobre Jetpack Compose
+[Ver documento](Investigacion%20Jetpack%20Compose%20-%20Sistema%20de%20Inventario.pdf)
