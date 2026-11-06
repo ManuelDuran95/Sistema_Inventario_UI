@@ -3,12 +3,15 @@ package com.example.sistemainventario
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,10 +22,14 @@ fun LoginScreen(
     onLoginExitoso: () -> Unit,
     onIrARegistro: () -> Unit
 ) {
-    var user by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val authState by authViewModel.authState.collectAsState()
+    var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf(false) }
 
+    LaunchedEffect(authState.isAuthenticated) {
+        if (authState.isAuthenticated) onLoginExitoso()
+    }
 
     Box(
         modifier = Modifier
@@ -30,7 +37,6 @@ fun LoginScreen(
             .background(Color(0xFF0F172A)),
         contentAlignment = Alignment.Center
     ) {
-
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,15 +65,17 @@ fun LoginScreen(
                 )
 
                 OutlinedTextField(
-                    value = user,
+                    value = email,
                     onValueChange = {
-                        user = it
-                        error = false
+                        email = it
+                        authViewModel.limpiarError()
                     },
-                    label = { Text("Usuario") },
+                    label = { Text("Correo electrónico") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    enabled = !authState.isLoading
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -76,18 +84,20 @@ fun LoginScreen(
                     value = pass,
                     onValueChange = {
                         pass = it
-                        error = false
+                        authViewModel.limpiarError()
                     },
                     label = { Text("Contraseña") },
                     visualTransformation = PasswordVisualTransformation(),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    enabled = !authState.isLoading
                 )
 
-                if (error) {
+                val error = authState.errorMessage
+                if (!error.isNullOrBlank()) {
                     Text(
-                        text = "Credenciales incorrectas",
+                        text = error,
                         color = Color(0xFFE11D48),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(top = 8.dp)
@@ -97,26 +107,41 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Button(
-                    onClick = {
-                        if (authViewModel.login(user, pass)) {
-                            error = false
-                            onLoginExitoso()
-                        } else {
-                            error = true
-                        }
-                    },
+                    onClick = { authViewModel.login(email, pass) },
+                    enabled = !authState.isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3B82F6))
                 ) {
-                    Text("Ingresar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    if (authState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(22.dp),
+                            color = Color.White,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Ingresar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedButton(
+                    onClick = { authViewModel.loginConGoogle(context) },
+                    enabled = !authState.isLoading,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text("Continuar con Google", fontWeight = FontWeight.SemiBold)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextButton(onClick = onIrARegistro) {
+                TextButton(onClick = onIrARegistro, enabled = !authState.isLoading) {
                     Text(
                         text = "¿No tienes cuenta? Regístrate",
                         color = Color(0xFF64748B),
@@ -134,9 +159,13 @@ fun RegisterScreen(
     onRegistroExitoso: () -> Unit,
     onVolverLogin: () -> Unit
 ) {
-    var user by remember { mutableStateOf("") }
+    val authState by authViewModel.authState.collectAsState()
+    var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("") }
-    var mensaje by remember { mutableStateOf("") }
+
+    LaunchedEffect(authState.isAuthenticated) {
+        if (authState.isAuthenticated) onRegistroExitoso()
+    }
 
     Box(
         modifier = Modifier
@@ -167,28 +196,38 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 OutlinedTextField(
-                    value = user,
-                    onValueChange = { user = it },
-                    label = { Text("Nuevo Usuario") },
+                    value = email,
+                    onValueChange = {
+                        email = it
+                        authViewModel.limpiarError()
+                    },
+                    label = { Text("Correo electrónico") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    enabled = !authState.isLoading
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 OutlinedTextField(
                     value = pass,
-                    onValueChange = { pass = it },
-                    label = { Text("Contraseña") },
+                    onValueChange = {
+                        pass = it
+                        authViewModel.limpiarError()
+                    },
+                    label = { Text("Contraseña (mín. 6)") },
                     visualTransformation = PasswordVisualTransformation(),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
+                    enabled = !authState.isLoading
                 )
 
-                if (mensaje.isNotEmpty()) {
+                val error = authState.errorMessage
+                if (!error.isNullOrBlank()) {
                     Text(
-                        text = mensaje,
+                        text = error,
                         color = Color(0xFFE11D48),
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(top = 8.dp)
@@ -198,29 +237,28 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Button(
-                    onClick = {
-                        if (user.isNotBlank() && pass.isNotBlank()) {
-                            if (authViewModel.registrar(user, pass)) {
-                                onRegistroExitoso()
-                            } else {
-                                mensaje = "El usuario ya existe"
-                            }
-                        } else {
-                            mensaje = "Completa los campos"
-                        }
-                    },
+                    onClick = { authViewModel.registrar(email, pass) },
+                    enabled = !authState.isLoading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF10B981))
                 ) {
-                    Text("Registrarse", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    if (authState.isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(22.dp),
+                            color = Color.White,
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Text("Registrarse", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                TextButton(onClick = onVolverLogin) {
+                TextButton(onClick = onVolverLogin, enabled = !authState.isLoading) {
                     Text(
                         text = "Volver al Login",
                         color = Color(0xFF64748B),

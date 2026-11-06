@@ -32,6 +32,7 @@ fun MainScreen(
     onIrARegistrar: () -> Unit
 ) {
     var mostrarDialogoLogout by remember { mutableStateOf(false) }
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     val opciones = listOf(
         OpcionMenu("Listar Activos", Icons.Default.List) {
@@ -45,6 +46,9 @@ fun MainScreen(
         },
         OpcionMenu("Actualizar Req.", Icons.Default.Refresh) {
             navController.navigate("actualizar_req")
+        },
+        OpcionMenu("Historial", Icons.Default.DateRange) {
+            navController.navigate("historial")
         },
         OpcionMenu("Ver Reporte", Icons.Default.Info) {
             navController.navigate("reporte")
@@ -63,7 +67,7 @@ fun MainScreen(
                 Button(
                     onClick = {
                         mostrarDialogoLogout = false
-                        authViewModel.logout()
+                        authViewModel.logout(context)
                         onLogout()
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE11D48))
