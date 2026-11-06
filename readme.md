@@ -54,3 +54,6 @@ Configuración ya realizada en la consola: *Correo electrónico/contraseña* y *
 * **Firebase BoM:** `firebase-auth` y `firebase-firestore`.
 * **Credential Manager** y **Google Identity** (`googleid`): inicio de sesión con Google.
 * **Kotlin Coroutines** (`kotlinx-coroutines-play-services`): llamadas asíncronas a Firebase con `await()`.
+
+## Investigación sobre Jetpack Compose
+[Ver documento](Investigacion%20Jetpack%20Compose%20-%20Sistema%20de%20Inventario.pdf)
