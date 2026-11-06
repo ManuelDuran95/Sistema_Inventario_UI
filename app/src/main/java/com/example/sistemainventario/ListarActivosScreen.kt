@@ -243,6 +243,16 @@ fun ActivoItemCard(activo: ActivoUiModel) {
                         )
                     }
                 }
+
+                if (activo.registradoPor.isNotBlank()) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "Registrado por ${activo.registradoPor}" +
+                            (activo.creadoEn?.let { " · ${formatearFecha(it)}" } ?: ""),
+                        fontSize = 11.sp,
+                        color = Color(0xFF64748B)
+                    )
+                }
             }
         }
     }
