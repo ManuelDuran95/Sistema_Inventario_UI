@@ -57,3 +57,12 @@ Configuración ya realizada en la consola: *Correo electrónico/contraseña* y *
 
 ## Investigación sobre Jetpack Compose
 [Ver documento](Investigacion%20Jetpack%20Compose%20-%20Sistema%20de%20Inventario.pdf)
+
+## 🎨 Diseño UX/UI (Mock Ups)
+* **Prototipo Interactivo en Figma:** [Ver prototipo en Figma](https://bear-robot-25788049.figma.site/)
+
+## 📄 Entrega Final (APA 7)
+* **Informe Técnico Final (Entrega Final Proyecto Completo - APA 7):** [Ver documento en Google Docs](https://docs.google.com/document/d/1T5ENS-x4M2lPBcuciqR0DgCcVoFRBKn1y8fFS7nOQ7U/edit?usp=sharing)
+
+## ⚖️ Licencia
+Este proyecto se distribuye bajo la licencia **Creative Commons Atribución-CompartirIgual 4.0 Internacional (CC BY-SA 4.0)**. Consulta los detalles en [creativecommons.org/licenses/by-sa/4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es).
