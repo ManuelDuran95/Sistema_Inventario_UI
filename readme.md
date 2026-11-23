@@ -64,5 +64,8 @@ Configuración ya realizada en la consola: *Correo electrónico/contraseña* y *
 ## 📄 Entrega Final (APA 7)
 * **Informe Técnico Final (Entrega Final Proyecto Completo - APA 7):** [Ver documento en Google Docs](https://docs.google.com/document/d/1T5ENS-x4M2lPBcuciqR0DgCcVoFRBKn1y8fFS7nOQ7U/edit?usp=sharing)
 
+## 🎬 Video de Demostración
+* **Video de la aplicación:** [Ver video en Google Drive](https://drive.google.com/drive/folders/1k0a90NIZ-42xIU6I4FgwiDPXMJOOKU5e?usp=sharing)
+
 ## ⚖️ Licencia
 Este proyecto se distribuye bajo la licencia **Creative Commons Atribución-CompartirIgual 4.0 Internacional (CC BY-SA 4.0)**. Consulta los detalles en [creativecommons.org/licenses/by-sa/4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es).
